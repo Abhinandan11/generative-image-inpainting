@@ -14,8 +14,8 @@ class Run(object):
     def __init__(self, args):
         # Data loader
         if args.DATASET == 'CelebA':
-            self.data_loader = get_loader(args.IMAGE_PATH, args.METADATA_PATH, 
-                                        args.CROP_SIZE, args.IMG_SIZE, 
+            self.data_loader = get_loader(args.IMAGE_PATH, args.METADATA_PATH,
+                                        args.CROP_SIZE, args.IMG_SIZE,
                                         args.BATCH_SIZE, args.DATASET, args.MODE)
 
         # Model hyper-parameters
@@ -105,7 +105,7 @@ class Run(object):
 
         print('loaded trained models (step: {})..!'.format(self.pretrained_model))
 
-    def train(self):   
+    def train(self):
 
         # The number of iterations per epoch
         iters_per_epoch = len(self.data_loader)
@@ -124,10 +124,10 @@ class Run(object):
         self.D.train()
         for epoch in range(start, self.num_epochs):
             for batch, real_image in enumerate(self.data_loader): # real_image : B x 3 x H x W
-                
+
                 batch_size = real_image.size(0)
                 real_image = 2.*real_image - 1. # [-1,1]
-                
+
                 # one bbox for each batch, ( top, left, maxH, maxW )
                 # W and H will be reduced at the function bbox2mask
                 bbox = self.util.random_bbox()
@@ -142,7 +142,7 @@ class Run(object):
                 real_image = to_var(real_image)
 
                 stage_1, stage_2, offset_flow = self.G(masked_image, binary_mask)
-                
+
                 fake_image = stage_2*binary_mask + masked_image*inverse_mask # mask_location: generated, around_mask: ground_truth
 
                 real_patch = self.util.local_patch(real_image, bbox)
@@ -154,7 +154,7 @@ class Run(object):
                 l1_alpha = self.stage1_lambda_l1
                 self.loss['recon'] = l1_alpha * self.L1(stage_1_patch, real_patch) # Coarse Network reconstruction loss
                 self.loss['recon'] = self.loss['recon'] + self.L1(stage_2_patch, real_patch) # Refinement Network reconstruction loss
-                
+
                 self.loss['ae_loss'] = l1_alpha * self.torch_L1(stage_1*inverse_mask, real_image*inverse_mask) # recon loss except mask
                 self.loss['ae_loss'] = self.loss['ae_loss'] + self.torch_L1(stage_2*inverse_mask, real_image*inverse_mask) # recon loss except mask
                 self.loss['ae_loss'] = self.loss['ae_loss'] / torch.mean(torch.mean(inverse_mask, dim=3), dim=2) # 1 x 1 tensor
@@ -179,10 +179,10 @@ class Run(object):
 
                 if (batch+1) % self.d_train_repeat == 0:
                     # gradient penalty
-                    global_interpolate = self.random_interpolates(real_image, fake_image) 
+                    global_interpolate = self.random_interpolates(real_image, fake_image)
                     local_interpolate = self.random_interpolates(real_patch, fake_patch)
                 else:
-                    global_interpolate = self.random_interpolates(real_image, fake_image.clone()) 
+                    global_interpolate = self.random_interpolates(real_image, fake_image.clone())
                     local_interpolate = self.random_interpolates(real_patch, fake_patch.clone())
 
                 global_gp_vector, local_gp_vector = self.D(global_interpolate, local_interpolate)
@@ -193,12 +193,12 @@ class Run(object):
                 self.loss['gp_loss'] = self.wgan_gp_lambda * (local_penalty + global_penalty)
                 self.loss['d_loss'] = self.loss['d_loss'] + self.loss['gp_loss']
 
-                if (batch+1) % self.d_train_repeat == 0:             
+                if (batch+1) % self.d_train_repeat == 0:
                     self.loss['g_loss'] = self.gan_loss_alpha * self.loss['g_loss']
                     self.loss['g_loss'] = self.loss['g_loss'] + self.l1_loss_alpha * self.loss['recon'] + self.ae_loss_alpha * self.loss['ae_loss']
                     self.backprop(D=True,G=True)
 
-                else:                  
+                else:
                     self.loss['g_loss'] = to_var(torch.FloatTensor([0]))
                     self.backprop(D=True,G=False)
 
@@ -275,8 +275,8 @@ class Run(object):
 
 def main(_):
 
-    cuda.set_device(args.GPU)
-    print("Running on GPU : ", args.GPU)
+    # cuda.set_device(args.GPU)
+    # print("Running on GPU : ", args.GPU)
     run = Run(args)
 
     if args.MODE == 'train':
