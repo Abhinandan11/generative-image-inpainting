@@ -26,7 +26,7 @@ class Util(object):
 
         maxt = img_height - self.args.VERTICAL_MARGIN - self.args.MASK_HEIGHT
         maxl = img_width - self.args.HORIZONTAL_MARGIN - self.args.MASK_WIDTH
-        
+
         t = randint(self.args.VERTICAL_MARGIN, maxt)
         l = randint(self.args.HORIZONTAL_MARGIN, maxl)
         h = self.args.MASK_HEIGHT
@@ -57,10 +57,10 @@ class Util(object):
         height = img_shape[0]
         width = img_shape[1]
 
-        mask = npmask(bbox, height, width, 
-                        self.args.MAX_DELTA_HEIGHT, 
+        mask = npmask(bbox, height, width,
+                        self.args.MAX_DELTA_HEIGHT,
                         self.args.MAX_DELTA_WIDTH)
-        
+
         return torch.FloatTensor(mask)
 
     def local_patch(self, x, bbox):
@@ -78,8 +78,8 @@ class Discounted_L1(nn.Module):
     def __init__(self, args, size_average=True, reduce=True):
         super(Discounted_L1, self).__init__()
         self.reduce = reduce
-        self.discounting_mask = spatial_discounting_mask(args.MASK_WIDTH, 
-                                                        args.MASK_HEIGHT, 
+        self.discounting_mask = spatial_discounting_mask(args.MASK_WIDTH,
+                                                        args.MASK_HEIGHT,
                                                         args.SPATIAL_DISCOUNTING_GAMMA)
         self.size_average = size_average
 
@@ -101,7 +101,7 @@ class Discounted_L1(nn.Module):
                 return d
             return torch.mean(d) if size_average else torch.sum(d)
         else:
-            return lambd_optimized(input, target, size_average, reduce)
+            return lambd_optimized(input, target, 0)
 
 
 def spatial_discounting_mask(mask_width, mask_height, discounting_gamma):
@@ -174,8 +174,8 @@ def show_image(real, masked, stage_1, stage_2, fake, offset_flow):
     batch_size = real.shape[0]
 
     (real, masked, stage_1, stage_2, fake, offset_flow) = (
-                                var_to_numpy(real), 
-                                var_to_numpy(masked), 
+                                var_to_numpy(real),
+                                var_to_numpy(masked),
                                 var_to_numpy(stage_1),
                                 var_to_numpy(stage_2),
                                 var_to_numpy(fake),

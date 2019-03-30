@@ -211,11 +211,11 @@ class Run(object):
                     print("Elapsed [{}], Epoch [{}/{}], Iter [{}/{}]".format(
                         elapsed, epoch+1, self.num_epochs, batch+1, iters_per_epoch))
                     print('=====================================================')
-                    print('reconstruction loss: ', self.loss['recon'].data[0])
-                    print('ae loss: ', self.loss['ae_loss'].data[0][0])
-                    print('g loss: ', self.loss['g_loss'].data[0])
-                    print('d loss: ', self.loss['d_loss'].data[0])
-                    show_image(real_image, (masked_image+binary_mask), stage_1, stage_2, fake_image, offset_flow)
+                    print('reconstruction loss: ', self.loss['recon'])
+                    print('ae loss: ', self.loss['ae_loss'])
+                    print('g loss: ', self.loss['g_loss'])
+                    print('d loss: ', self.loss['d_loss'])
+                    #show_image(real_image, (masked_image+binary_mask), stage_1, stage_2, fake_image, offset_flow)
 
                 # Save model checkpoints
                 if batch % self.model_save_step == 0:
@@ -237,7 +237,7 @@ class Run(object):
             self.d_optimizer.step()
         if G:
             self.g_optimizer.zero_grad()
-            self.loss['g_loss'].backward()
+            self.loss['g_loss'].mean().backward()
             self.g_optimizer.step()
 
     def wgan_loss(self, real, fake):
