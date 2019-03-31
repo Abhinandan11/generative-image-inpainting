@@ -1,0 +1,5 @@
+torchvision==0.2.2.post3
+torch==1.0.1.post2
+matplotlib==2.2.3
+numpy==1.15.4
+Pillow==5.4.1
