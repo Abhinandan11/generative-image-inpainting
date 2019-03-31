@@ -1,14 +1,5 @@
 import argparse
 
-def str2bool(v):
-    if v.lower() in ('yes', 'true', 't', 'y', '1', True):
-        return True
-    elif v.lower() in ('no', 'false', 'f', 'n', '0', False):
-        return False
-    else:
-        raise argparse.ArgumentTypeError('Boolean value expected.')
-
-
 parser = argparse.ArgumentParser(description='')
 
 #Image setting
@@ -30,7 +21,7 @@ parser.add_argument('--AE_LOSS_ALPHA', type=float, default=2)
 parser.add_argument('--D_TRAIN_REPEAT', type=int, default=5)
 
 # Training settings
-parser.add_argument('--DATASET', type=str, default='CelebA', choices=['CelebA'])
+parser.add_argument('--DATASET', type=str, default='CelebA', choices=['CelebA', 'ImageNet',  'Places2'])
 parser.add_argument('--NUM_EPOCHS', type=int, default=10)
 parser.add_argument('--NUM_EPOCHS_DECAY', type=int, default=10)
 parser.add_argument('--NUM_ITERS', type=int, default=200000)
@@ -46,7 +37,6 @@ parser.add_argument('--TEST_MODEL', type=str, default='20_1000')
 
 # Misc
 parser.add_argument('--MODE', type=str, default='train', choices=['train', 'test'])
-parser.add_argument('--USE_TENSORBOARD', type=str2bool, default=False)
 
 # Path
 parser.add_argument('--IMAGE_PATH', type=str, default='./data/CelebA/images')
