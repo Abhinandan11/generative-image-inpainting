@@ -16,18 +16,23 @@ $ git clone https://github.com/Abhinandan11/generative-image-inpainting.git
 $ cd generative-image-inpainting/
 ```
 
-### 2. Downloading the dataset
+### 2. Installing Requirements
+```bash
+$ pip install -r requirements.txt
+```
+
+### 3. Downloading the dataset
 To download the CelebA dataset, go to Kaggle:
 ```
 https://www.kaggle.com/jessicali9530/celeba-dataset
 ```
-We need **images** and **list_attr_celeba.txt**
-### 3. Training
+We need **images** and **list_attr_celeba.txt**. Put images in ```data/CelebA/images/```, and list_attr_celeba.txt in ```data/```
+### 4. Training
 ```bash
 $ python main.py
 ```
 [Refer config.py for available arguments]
-### 4. Testing
+### 5. Testing
 ```bash
 $ python main.py --mode test
 ```
