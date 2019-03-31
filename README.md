@@ -31,9 +31,9 @@ We need **images** and **list_attr_celeba.txt**. Put images in ```data/CelebA/im
 ```bash
 $ python main.py
 ```
-[Refer config.py for available arguments]
+[Refer config.py for additional arguments]
 ### 5. Testing
 ```bash
 $ python main.py --mode test
 ```
-[Refer config.py for available arguments]
+[Refer config.py for additional arguments]
