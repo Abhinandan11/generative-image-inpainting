@@ -12,11 +12,11 @@ def str2bool(v):
 parser = argparse.ArgumentParser(description='')
 
 #Image setting
-image_size = 128
+image_size = 32
 mask_size = int(image_size/2)
 
 parser.add_argument('--GPU', type=int, default=0)
-parser.add_argument('--CROP_SIZE', type=int, default=image_size+128) # 178
+parser.add_argument('--CROP_SIZE', type=int, default=2*image_size)
 parser.add_argument('--IMG_SIZE', type=int, default=image_size)
 
 parser.add_argument('--G_LR', type=float, default=1e-4)
@@ -31,7 +31,7 @@ parser.add_argument('--D_TRAIN_REPEAT', type=int, default=5)
 
 # Training settings
 parser.add_argument('--DATASET', type=str, default='CelebA', choices=['CelebA'])
-parser.add_argument('--NUM_EPOCHS', type=int, default=100)
+parser.add_argument('--NUM_EPOCHS', type=int, default=10)
 parser.add_argument('--NUM_EPOCHS_DECAY', type=int, default=10)
 parser.add_argument('--NUM_ITERS', type=int, default=200000)
 parser.add_argument('--NUM_ITERS_DECAY', type=int, default=100000)
@@ -39,7 +39,7 @@ parser.add_argument('--BATCH_SIZE', type=int, default=32)
 parser.add_argument('--BETA1', type=float, default=0.5)
 parser.add_argument('--BETA2', type=float, default=0.9)
 parser.add_argument('--PRETRAINED_MODEL', type=str, default=None)
-parser.add_argument('--SPATIAL_DISCOUNTING_GAMMA', type=float, default=0.9)
+parser.add_argument('--SPATIAL_DISCOUNTING_GAMMA', type=float, default=0.99)
 
 # Test settings
 parser.add_argument('--TEST_MODEL', type=str, default='20_1000')

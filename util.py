@@ -181,7 +181,7 @@ def show_image(real, masked, stage_1, stage_2, fake, offset_flow):
                                 var_to_numpy(fake),
                                 var_to_numpy(offset_flow)
                               )
-    # offset_flow = (offset_flow*2).astype(int) -1
+
     for x in range(batch_size):
         if x > 5 :
             break
@@ -205,10 +205,6 @@ def show_image(real, masked, stage_1, stage_2, fake, offset_flow):
         axs[4].set_title('fake_image')
         axs[4].imshow(fake[x])
         axs[4].axis('off')
-
-        # axs[5].set_title('C_Attn')
-        # axs[5].imshow(offset_flow[x])
-        # axs[5].axis('off')
 
         plt.show()
 

@@ -12,6 +12,7 @@ from torchvision.utils import save_image
 
 class Run(object):
     def __init__(self, args):
+
         # Data loader
         if args.DATASET == 'CelebA':
             self.data_loader = get_loader(args.IMAGE_PATH, args.METADATA_PATH,
@@ -87,10 +88,6 @@ class Run(object):
         # etc.
         self.util = Util(args)
 
-        # Print networks
-        # self.util.print_network(self.G, 'G')
-        # self.util.print_network(self.D, 'D')
-
         if torch.cuda.is_available():
             self.G = self.G.cuda()
             self.D = self.D.cuda()
@@ -103,7 +100,7 @@ class Run(object):
         self.D.load_state_dict(torch.load(os.path.join(
             self.model_save_path, 'D_{}_L1_{}.pth'.format(self.pretrained_model, self.l1_loss_alpha))))
 
-        print('loaded trained models (step: {})..!'.format(self.pretrained_model))
+        print('loaded trained models (step: {})'.format(self.pretrained_model))
 
     def train(self):
 
@@ -228,7 +225,7 @@ class Run(object):
                 if batch % self.sample_step == 0:
                     save_image(self.denorm(fake_image.clone().data.cpu()),
                         os.path.join(self.sample_path, '{}_{}_fake.png'.format(epoch+1, batch+1)),nrow=1, padding=0)
-                    print('Translated images and saved into {}..!'.format(self.sample_path))
+                    print('Translated images and saved into {}'.format(self.sample_path))
 
     def backprop(self, D=True, G=True):
         if D:
@@ -275,8 +272,8 @@ class Run(object):
 
 def main(_):
 
-    # cuda.set_device(args.GPU)
-    # print("Running on GPU : ", args.GPU)
+    cuda.set_device(args.GPU)
+    print("Running on GPU : ", args.GPU)
     run = Run(args)
 
     if args.MODE == 'train':

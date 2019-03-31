@@ -8,7 +8,7 @@ from torchvision.datasets import ImageFolder
 from PIL import Image
 
 
-class CelebDataset(Dataset):
+class Dataset(Dataset):
     def __init__(self, image_path, metadata_path, transform, mode, crop_size):
         self.image_path = image_path
         self.transform = transform
@@ -18,7 +18,7 @@ class CelebDataset(Dataset):
         self.crop_size = crop_size
 
         print ('Start preprocessing dataset..!')
-        random.seed(1234)
+        random.seed(123)
         self.preprocess()
         print ('Finished preprocessing dataset..!')
 
@@ -48,7 +48,7 @@ class CelebDataset(Dataset):
             image = Image.open(os.path.join(self.image_path, self.train_filenames[index]))
         elif self.mode in ['test']:
             image = Image.open(os.path.join(self.image_path, self.test_filenames[index]))
-        # self.check_size(image, index)
+
         return self.transform(image)
 
     def __len__(self):
@@ -64,18 +64,18 @@ def get_loader(image_path, metadata_path, crop_size, image_size, batch_size, dat
             transforms.Resize(image_size, interpolation=Image.ANTIALIAS),
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
-            # transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+
             ])
     else:
         transform = transforms.Compose([
             transforms.CenterCrop(crop_size),
             transforms.Scale(image_size, interpolation=Image.ANTIALIAS),
             transforms.ToTensor(),
-            # transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+
             ])
 
     if dataset == 'CelebA':
-        dataset = CelebDataset(image_path, metadata_path, transform, mode, crop_size)
+        dataset = Dataset(image_path, metadata_path, transform, mode, crop_size)
 
     shuffle = False
     if mode == 'train':
