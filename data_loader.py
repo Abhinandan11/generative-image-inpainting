@@ -4,9 +4,7 @@ import random
 from torch.utils.data import Dataset
 from torch.utils.data import DataLoader
 from torchvision import transforms
-from torchvision.datasets import ImageFolder
 from PIL import Image
-
 
 class Dataset(Dataset):
     def __init__(self, image_path, metadata_path, transform, mode, crop_size):
@@ -17,10 +15,10 @@ class Dataset(Dataset):
         self.num_data = int(self.lines[0])
         self.crop_size = crop_size
 
-        print ('Start preprocessing dataset..!')
+        print ('Preprocessing started')
         random.seed(123)
         self.preprocess()
-        print ('Finished preprocessing dataset..!')
+        print ('Preprocessing finished')
 
         if self.mode == 'train':
             self.num_data = len(self.train_filenames)
@@ -56,22 +54,18 @@ class Dataset(Dataset):
 
 
 def get_loader(image_path, metadata_path, crop_size, image_size, batch_size, dataset='CelebA', mode='train'):
-    """Build and return data loader."""
-
     if mode == 'train':
         transform = transforms.Compose([
             transforms.CenterCrop(crop_size),
             transforms.Resize(image_size, interpolation=Image.ANTIALIAS),
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
-
             ])
     else:
         transform = transforms.Compose([
             transforms.CenterCrop(crop_size),
             transforms.Scale(image_size, interpolation=Image.ANTIALIAS),
             transforms.ToTensor(),
-
             ])
 
     if dataset == 'CelebA':
