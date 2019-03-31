@@ -1,5 +1,6 @@
 # generative-image-inpainting
 
+A PyTorch implementation of [Generative Image Inpainting with Contextual Attention](https://arxiv.org/abs/1801.07892)
 
 ## Dependencies
 * [Python 3.6+](https://www.continuum.io/downloads)
@@ -20,7 +21,7 @@ To download the CelebA dataset, go to Kaggle:
 ```
 https://www.kaggle.com/jessicali9530/celeba-dataset
 ```
-We need images and list_attr_celeba.txt
+We need **images** and **list_attr_celeba.txt**
 ### 3. Training
 ```bash
 $ python main.py
@@ -30,3 +31,4 @@ $ python main.py
 ```bash
 $ python main.py --mode test
 ```
+[Refer config.py for available arguments]
